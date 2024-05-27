@@ -51,9 +51,9 @@ function App() {
 
   return (
     <div className="m-5 p-5">
-      <div className="flex flex-row justify-between items-center">
-        <div className="text-center text-xl">Langging Payroll</div>
-        <div className="text-sm mt-0">{formattedDate}</div>
+      <div className="flex flex-row justify-between items-center mb-5">
+        <div className="text-center text-l font-mono">Langging Payroll</div>
+        <div className="text-sm mt-0 font-mono">{formattedDate}</div>
       </div>
 
       <div className="flex flex-row gap-2 items-center mt-2 border-1 border-indigo-800 mb-2">
@@ -76,7 +76,7 @@ function App() {
         {isClick && (
           <div
             onClick={handleClear}
-            className="border-1 rounded-lg border-slate-800 bg-red-600 hover:bg-red-800 p-2 w-40 text-center text-gray-200"
+            className="border-1 rounded-lg border-slate-800 bg-gray-200 hover:bg-gray-100 p-2 w-40 text-center text-gray-600"
           >
             Clear
           </div>
@@ -87,24 +87,21 @@ function App() {
         <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
             <div className="overflow-hidden">
-              <table className="min-w-full border text-center text-sm font-light dark:border-neutral-500">
-                <thead className="border-b font-medium dark:border-neutral-500">
+              <table className="min-w-full text-center text-sm font-light ">
+                <thead className="font-medium ">
                   <tr>
-                    <th
-                      scope="col"
-                      className="border-r px-6 py-4 dark:border-neutral-500"
-                    >
+                    <th scope="col" className="px-6 py-4">
                       Deductions
                     </th>
                     <th
                       scope="col"
-                      className="border-r px-6 py-4 dark:border-neutral-500"
+                      className=" px-6 py-4 dark:border-neutral-500"
                     >
                       Amount
                     </th>
                     <th
                       scope="col"
-                      className="border-r px-6 py-4 dark:border-neutral-500"
+                      className="px-6 py-4 dark:border-neutral-500"
                     >
                       Earnings
                     </th>
@@ -114,54 +111,69 @@ function App() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b dark:border-neutral-500">
-                    <td className="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
+                  <tr className=" dark:border-neutral-500 bg-indigo-400">
+                    <td className="whitespace-nowrap px-6 py-4 font-medium dark:border-neutral-500">
                       SSS
                     </td>
-                    <td className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
-                      {isClick && sss}
+                    <td className="whitespace-nowrap px-6 py-4 dark:border-neutral-500">
+                      {isClick ? formatThousandAmount(sss) : "0.00"}
                     </td>
-                    <td className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                    <td className="whitespace-nowrap px-6 py-4 dark:border-neutral-500">
                       OT Pay
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4">{0}</td>
+                    <td className="whitespace-nowrap px-6 py-4">{"0.00"}</td>
                   </tr>
-                  <tr className="border-b dark:border-neutral-500">
-                    <td className="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
+                  <tr className=" dark:border-neutral-500">
+                    <td className="whitespace-nowrap px-6 py-4 font-medium dark:border-neutral-500">
                       Pag-Ibig
                     </td>
-                    <td className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
-                      {isClick && pagIbig}
+                    <td className="whitespace-nowrap px-6 py-4 dark:border-neutral-500">
+                      {isClick ? Number(pagIbig).toFixed(2) : "0.00"}
                     </td>
-                    <td className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                    <td className="whitespace-nowrap px-6 py-4 dark:border-neutral-500">
                       Holiday Pay
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4">{1}</td>
+                    <td className="whitespace-nowrap px-6 py-4">{"0.00"}</td>
                   </tr>
-                  <tr className="border-b dark:border-neutral-500">
-                    <td className="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
+                  <tr className=" dark:border-neutral-500 bg-indigo-400">
+                    <td className="whitespace-nowrap px-6 py-4 font-medium dark:border-neutral-500">
                       PhilHealth
                     </td>
-                    <td className="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
-                      {isClick && philhealth}
+                    <td className="whitespace-nowrap px-6 py-4 font-medium dark:border-neutral-500">
+                      {isClick ? Number(philhealth).toFixed(2) : "0.00"}
                     </td>
-                    <td className="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
+                    <td className="whitespace-nowrap px-6 py-4 font-medium dark:border-neutral-500">
                       Gross
                     </td>
-                    <td className="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
-                      {2}
+                    <td className="whitespace-nowrap px-6 py-4 font-medium dark:border-neutral-500">
+                      {"0.00"}
                     </td>
                   </tr>
-                  <tr className="border-b dark:border-neutral-500">
+                  <tr className=" dark:border-neutral-500">
+                    <td className="whitespace-nowrap px-6 py-4 font-semibold dark:border-neutral-500">
+                      Total Deductions
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4 font-semibold dark:border-neutral-500">
+                      {isClick ? formatThousandAmount(deductions) : "0.00"}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4 font-semibold dark:border-neutral-500">
+                      Total Earnings
+                    </td>
+                    <td className="whitespace-nowrap  px-6 py-4 font-semibold dark:border-neutral-500">
+                      {"0.00"}
+                    </td>
+                  </tr>
+                  <tr className=" bg-indigo-200">
+                    <td></td>
+                    <td></td>
                     <td
-                      colSpan={2}
-                      className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500"
+                      className="whitespace-nowrap px-6 py-4 dark:border-neutral-500 font-semibold"
                       onClick={() => alert("I love you! <3")}
                     >
                       Net Pay
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {isClick && formatThousandAmount(netSal)}
+                    <td className="whitespace-nowrap px-6 py-4 font-semibold ">
+                      {isClick ? formatThousandAmount(netSal) : "0.00"}
                     </td>
                   </tr>
                 </tbody>
