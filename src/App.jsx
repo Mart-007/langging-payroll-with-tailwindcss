@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { formatThousandAmount } from "./helpers/pureFunctions";
 
 function App() {
   const currentDate = new Date();
@@ -15,9 +17,24 @@ function App() {
   const [salValue, setSalValue] = useState("");
   const [isClick, setIsClick] = useState(false);
 
+  const notify = () =>
+    toast.error("Please input salary.", {
+      theme: "colored",
+      autoClose: 3000,
+      hideProgressBar: true,
+    });
+
   const hanldeSalChange = (e) => {
     const { value } = e.target;
     setSalValue(value);
+  };
+
+  const handleClick = () => {
+    if (!salValue) {
+      notify();
+      return;
+    }
+    setIsClick(true);
   };
 
   const handleClear = () => {
@@ -32,37 +49,125 @@ function App() {
   const netSal = !salValue ? 0 : salValue - deductions;
 
   return (
-    <div className="border-2 border-slate-400 m-5 p-5">
-      <div className="text-center text-xl">Langging Payroll</div>
-      <div className="text-sm">
-        <span className="font-bold">as of</span> {formattedDate}
+    <div className="m-5 p-5">
+      <div className="flex flex-row justify-between">
+        <div className="text-center text-xl mb-5">Langging Payroll</div>
+        <div className="text-sm mt-0">{formattedDate}</div>
       </div>
-      <div className="flex flex-col gap-2 items-center mt-2 border-1 border-indigo-800">
+
+      <div className="flex flex-row gap-2 items-center mt-2 border-1 border-indigo-800 mb-2">
         <input
           placeholder="Input salary"
           type="number"
           value={salValue}
           name="salary"
-          className="bg-slate-100 p-2 w-60"
+          className="border rounded-lg border-indigo-800 p-2 w-60 placeholder-slate-600"
           onChange={(e) => hanldeSalChange(e)}
         />
+
         <div
-          onClick={() => setIsClick(true)}
-          className="border-1 border-slate-800 bg-green-50 p-2 w-60 text-center"
+          onClick={handleClick}
+          className="border-1 rounded-lg hover:bg-indigo-500 border-slate-800 bg-indigo-400 p-2 w-40 text-center text-gray-200"
         >
           Enter
         </div>
-        <div
-          onClick={handleClear}
-          className="border-1 border-slate-800 bg-red-50 p-2 w-60 text-center"
-        >
-          Clear
+        <ToastContainer />
+        {isClick && (
+          <div
+            onClick={handleClear}
+            className="border-1 rounded-lg border-slate-800 bg-red-600 hover:bg-red-800 p-2 w-40 text-center text-gray-200"
+          >
+            Clear
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-col">
+        <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+            <div className="overflow-hidden">
+              <table className="min-w-full border text-center text-sm font-light dark:border-neutral-500">
+                <thead className="border-b font-medium dark:border-neutral-500">
+                  <tr>
+                    <th
+                      scope="col"
+                      className="border-r px-6 py-4 dark:border-neutral-500"
+                    >
+                      Deductions
+                    </th>
+                    <th
+                      scope="col"
+                      className="border-r px-6 py-4 dark:border-neutral-500"
+                    >
+                      Amount
+                    </th>
+                    <th
+                      scope="col"
+                      className="border-r px-6 py-4 dark:border-neutral-500"
+                    >
+                      Earnings
+                    </th>
+                    <th scope="col" className="px-6 py-4">
+                      Amount
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b dark:border-neutral-500">
+                    <td className="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
+                      SSS
+                    </td>
+                    <td className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                      {isClick && sss}
+                    </td>
+                    <td className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                      OT Pay
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">{0}</td>
+                  </tr>
+                  <tr className="border-b dark:border-neutral-500">
+                    <td className="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
+                      Pag-Ibig
+                    </td>
+                    <td className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                      {isClick && pagIbig}
+                    </td>
+                    <td className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                      Holiday Pay
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">{1}</td>
+                  </tr>
+                  <tr className="border-b dark:border-neutral-500">
+                    <td className="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
+                      PhilHealth
+                    </td>
+                    <td className="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
+                      {isClick && philhealth}
+                    </td>
+                    <td className="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
+                      Gross
+                    </td>
+                    <td className="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
+                      {2}
+                    </td>
+                  </tr>
+                  <tr className="border-b dark:border-neutral-500">
+                    <td
+                      colSpan={2}
+                      className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500"
+                    >
+                      Net Pay
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {isClick && formatThousandAmount(netSal)}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
-      <div>SSS: {isClick && sss}</div>
-      <div>Pag-Ibig: {isClick && pagIbig}</div>
-      <div>PhilHealth: {isClick && philhealth}</div>
-      <div>net: {isClick && netSal}</div>
     </div>
   );
 }
