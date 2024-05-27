@@ -12,7 +12,7 @@ export const formatThousandAmount = (num) => {
         result = "," + result;
       }
     }
-
+    console.log("decimal:", decimal);
     if (!decimal) {
       return `${result}.00`;
     }

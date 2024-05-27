@@ -21,7 +21,8 @@ function App() {
     toast.error("Please input salary.", {
       theme: "colored",
       autoClose: 3000,
-      hideProgressBar: true,
+      hideProgressBar: false,
+      background: "none",
     });
 
   const hanldeSalChange = (e) => {
@@ -50,18 +51,18 @@ function App() {
 
   return (
     <div className="m-5 p-5">
-      <div className="flex flex-row justify-between">
-        <div className="text-center text-xl mb-5">Langging Payroll</div>
+      <div className="flex flex-row justify-between items-center">
+        <div className="text-center text-xl">Langging Payroll</div>
         <div className="text-sm mt-0">{formattedDate}</div>
       </div>
 
       <div className="flex flex-row gap-2 items-center mt-2 border-1 border-indigo-800 mb-2">
         <input
-          placeholder="Input salary"
+          placeholder="Input salary..."
           type="number"
           value={salValue}
           name="salary"
-          className="border rounded-lg border-indigo-800 p-2 w-60 placeholder-slate-600"
+          className="border rounded-lg border-indigo-400 p-2 w-60 placeholder-slate-500 bg-indigo-200 "
           onChange={(e) => hanldeSalChange(e)}
         />
 
@@ -155,6 +156,7 @@ function App() {
                     <td
                       colSpan={2}
                       className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500"
+                      onClick={() => alert("I love you! <3")}
                     >
                       Net Pay
                     </td>
