@@ -46,8 +46,54 @@ function App() {
   const sss = 1350;
   const pagIbig = 200;
   const philhealth = 875;
+
   const deductions = sss + pagIbig + philhealth;
   const netSal = !salValue ? 0 : salValue - deductions;
+  const withHoldingTax = (netSal - 20833) * 0.15;
+  const netSalAfterTax = netSal - withHoldingTax;
+
+  const totalDeductions = deductions + withHoldingTax;
+
+  const dataSets = [
+    {
+      deducLabel: "W/H Tax",
+      deducValue: formatThousandAmount(withHoldingTax),
+      earnLabel: "Basic Pay",
+      earnValue: formatThousandAmount(salValue),
+    },
+    {
+      deducLabel: "SSS",
+      deducValue: formatThousandAmount(sss),
+      earnLabel: "OT Pay",
+      earnValue: "0.00",
+    },
+    {
+      deducLabel: "Pag-Ibig",
+      deducValue: Number(pagIbig).toFixed(2),
+      earnLabel: "Holiday Pay",
+      earnValue: "0.00",
+    },
+    {
+      deducLabel: "PhilHealth",
+      deducValue: Number(philhealth).toFixed(2),
+      earnLabel: "Gross",
+      earnValue: "0.00",
+    },
+    {
+      deducLabel: "Total Deductions",
+      deducValue: formatThousandAmount(totalDeductions),
+      earnLabel: "Total Earnings",
+      earnValue: formatThousandAmount(salValue),
+    },
+    {
+      deducLabel: "",
+      deducValue: "",
+      earnLabel: "Net Pay",
+      earnValue: formatThousandAmount(netSalAfterTax),
+    },
+  ];
+
+  const headerData = ["Deductions", "Amount", "Earnings", "Amount"];
 
   return (
     <div className="m-5 p-5">
@@ -88,94 +134,54 @@ function App() {
           <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
             <div className="overflow-hidden">
               <table className="min-w-full text-center text-sm font-light ">
-                <thead className="font-medium ">
+                <thead className="font-medium bg-indigo-200">
                   <tr>
-                    <th scope="col" className="px-6 py-4">
-                      Deductions
-                    </th>
-                    <th
-                      scope="col"
-                      className=" px-6 py-4 dark:border-neutral-500"
-                    >
-                      Amount
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-4 dark:border-neutral-500"
-                    >
-                      Earnings
-                    </th>
-                    <th scope="col" className="px-6 py-4">
-                      Amount
-                    </th>
+                    {headerData.map((dataHeader, index) => (
+                      <th key={index} scope="col" className="px-6 py-4">
+                        {dataHeader}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className=" dark:border-neutral-500 bg-indigo-400">
-                    <td className="whitespace-nowrap px-6 py-4 font-medium dark:border-neutral-500">
-                      SSS
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 dark:border-neutral-500">
-                      {isClick ? formatThousandAmount(sss) : "0.00"}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 dark:border-neutral-500">
-                      OT Pay
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4">{"0.00"}</td>
-                  </tr>
-                  <tr className=" dark:border-neutral-500">
-                    <td className="whitespace-nowrap px-6 py-4 font-medium dark:border-neutral-500">
-                      Pag-Ibig
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 dark:border-neutral-500">
-                      {isClick ? Number(pagIbig).toFixed(2) : "0.00"}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 dark:border-neutral-500">
-                      Holiday Pay
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4">{"0.00"}</td>
-                  </tr>
-                  <tr className=" dark:border-neutral-500 bg-indigo-400">
-                    <td className="whitespace-nowrap px-6 py-4 font-medium dark:border-neutral-500">
-                      PhilHealth
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 font-medium dark:border-neutral-500">
-                      {isClick ? Number(philhealth).toFixed(2) : "0.00"}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 font-medium dark:border-neutral-500">
-                      Gross
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 font-medium dark:border-neutral-500">
-                      {"0.00"}
-                    </td>
-                  </tr>
-                  <tr className=" dark:border-neutral-500">
-                    <td className="whitespace-nowrap px-6 py-4 font-semibold dark:border-neutral-500">
-                      Total Deductions
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 font-semibold dark:border-neutral-500">
-                      {isClick ? formatThousandAmount(deductions) : "0.00"}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 font-semibold dark:border-neutral-500">
-                      Total Earnings
-                    </td>
-                    <td className="whitespace-nowrap  px-6 py-4 font-semibold dark:border-neutral-500">
-                      {"0.00"}
-                    </td>
-                  </tr>
-                  <tr className=" bg-indigo-200">
-                    <td></td>
-                    <td></td>
-                    <td
-                      className="whitespace-nowrap px-6 py-4 dark:border-neutral-500 font-semibold"
-                      onClick={() => alert("I love you! <3")}
-                    >
-                      Net Pay
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 font-semibold ">
-                      {isClick ? formatThousandAmount(netSal) : "0.00"}
-                    </td>
-                  </tr>
+                  {dataSets.map((data, index) => {
+                    const lastIndex = index === dataSets.length - 1;
+                    const secondToLastIndex = index === dataSets.length - 2;
+                    const semiBoldFont =
+                      lastIndex || secondToLastIndex
+                        ? "font-semibold"
+                        : "font-medium";
+
+                    return (
+                      <tr
+                        key={index}
+                        className={`${index} ${
+                          lastIndex ? "bg-indigo-200" : ""
+                        } dark:border-neutral-500`}
+                      >
+                        <td
+                          className={`${semiBoldFont} whitespace-nowrap px-6 py-4  dark:border-neutral-500`}
+                        >
+                          {data.deducLabel}
+                        </td>
+                        <td
+                          className={`${semiBoldFont} whitespace-nowrap px-6 py-4  dark:border-neutral-500`}
+                        >
+                          {isClick ? data.deducValue : "0.00"}
+                        </td>
+                        <td
+                          className={`${semiBoldFont} whitespace-nowrap px-6 py-4  dark:border-neutral-500`}
+                        >
+                          {data.earnLabel}
+                        </td>
+                        <td
+                          className={`${semiBoldFont} whitespace-nowrap  px-6 py-4  dark:border-neutral-500`}
+                        >
+                          {isClick ? data.earnValue : "0.00"}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
